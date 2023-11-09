@@ -1,0 +1,9 @@
+# requirements.txt
+# replace x.x.x with the version want installed
+google-cloud-bigquery==x.x.x
+pickle
+pathlib
+streamlit 
+streamlit_authenticator
+pandas 
+datetime
