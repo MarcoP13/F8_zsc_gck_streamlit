@@ -1,3 +1,2 @@
-.streamlit
-config.toml
+.streamlit/secrets.toml
 secrets.toml
