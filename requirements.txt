@@ -1,8 +1,3 @@
 # requirements.txt
-# replace x.x.x with the version want installed
 google-cloud-bigquery==3.5.0
-pathlib
-streamlit 
-streamlit_authenticator
-pandas 
-datetime
+plotly-express==0.4.1
