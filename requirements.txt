@@ -1,6 +1,6 @@
 # requirements.txt
 # replace x.x.x with the version want installed
-google-cloud-bigquery==x.x.x
+google-cloud-bigquery==3.5.0
 pickle
 pathlib
 streamlit 
