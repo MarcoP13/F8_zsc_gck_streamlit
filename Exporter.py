@@ -17,6 +17,9 @@ hide_menu = """
 #MainMenu {
     visibility: hidden;
 }
+header {
+    display: none;
+}
 footer {
     visibility: visible;
 }
@@ -56,10 +59,10 @@ desktop_path = pathlib.Path.home() / "Desktop"
 # Page config 
 # ****
 st.set_page_config(
-  layout="wide", 
-  page_title="GCK/ZSC Lions", 
-  page_icon=":ice_hockey_stick_and_puck:"
-  )
+    layout="wide", 
+    page_title="GCK/ZSC Lions", 
+    page_icon=":ice_hockey_stick_and_puck:"
+    )
 
 # hide the hamburger and the modify the footer
 st.markdown(hide_menu, unsafe_allow_html=True)
