@@ -12,7 +12,21 @@ from panoply_loader import *
 import plotly.express as px
 import plotly.graph_objects as go
 
-import numpy as np
+hide_menu = """
+<style>
+#MainMenu {
+    visibility: hidden;
+}
+footer {
+    visibility: visible;
+}
+footer:after{
+    content:"Created by Force8";
+    display:block;
+    position:relativ;
+    bottom:0px;
+}
+</style>""" 
 
 
 def split_df_by_test(df_final_players):
