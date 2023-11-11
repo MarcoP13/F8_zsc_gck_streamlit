@@ -24,7 +24,7 @@ footer {
     visibility: visible;
 }
 footer:after{
-    content:"Created by Force8";
+    content:"Created by Force8 - 2023";
     display:block;
     position:relativ;
     bottom:0px;
