@@ -20,8 +20,8 @@ hide_st_style = """
             .css-10pw50.ea3mdgi1 { visibility: hidden; }
             .block-container.css-z5fcl4.ea3mdgi4 {
                 padding-top: 0px !important;
-                padding-left: 0px
-                padding-right: 0px
+                padding-left: 0px !important;
+                padding-right: 0px !important;
             }
             footer:before{
                 content:"Created by Force8 - 2023";
