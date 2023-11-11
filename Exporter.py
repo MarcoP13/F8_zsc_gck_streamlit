@@ -17,11 +17,8 @@ hide_menu = """
 #MainMenu {
     visibility: hidden;
 }
-#stHeader  {
-    visibility: hidden;
-}
 header {
-    display: none;
+    visibility: hidden;
 }
 footer {
     visibility: visible;
