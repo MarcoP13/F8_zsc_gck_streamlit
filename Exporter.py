@@ -1,3 +1,4 @@
+import os
 import pickle
 import pathlib
 from pathlib import Path
@@ -53,9 +54,20 @@ def split_df_by_player(df_final_players):
         df_dict[name] = df_final_players[df_final_players['name'] == name]
     return df_dict
 
-# Get the user's desktop path.
-desktop_path = pathlib.Path.home() / "Desktop"
+# This function returns the path to the user's desktop
+def get_desktop_path():
+    if os.name == 'nt': # If the user is on Windows
+        desktop_path = os.path.join(os.path.expanduser('~'), 'Desktop')
+    elif os.name == 'posix': # If the user is on macOS or Linux
+        desktop_path = os.path.join(os.path.expanduser('~'), 'Desktop')
+    else:
+        desktop_path = None
+        st.error('This operating system is not supported.')
+    return desktop_path
 
+# Get the user's desktop path.
+# desktop_path = get_desktop_path()
+desktop_path = pathlib.Path.home() / "Desktop"
 # ****
 # Page config 
 # ****
@@ -64,7 +76,7 @@ st.set_page_config(
     page_title="GCK/ZSC Lions", 
     page_icon=":ice_hockey_stick_and_puck:"
     )
-
+st.write(f"Desktop: {desktop_path}")
 # hide the hamburger and the modify the footer
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
@@ -574,8 +586,8 @@ if authentication_status:
                 # Add a button to export the dataframe to a CSV file
                 if st.button('Export to CSV - players (wide)'):
                     try:
-                        df_long_players.to_csv("player_tests_wide.csv", index=False)
-                        # df_long_players.to_csv(desktop_path / "player_tests_wide.csv", index=False)
+                        # df_long_players.to_csv("player_tests_wide.csv", index=False)
+                        df_long_players.to_csv(desktop_path / "player_tests_wide.csv", index=False)
                         st.success("Export to CSV successful!")
                     except Exception as e:
                         st.error(f"Export to CSV failed! {e}")
