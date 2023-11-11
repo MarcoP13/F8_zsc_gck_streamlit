@@ -61,6 +61,9 @@ st.set_page_config(
   page_icon=":ice_hockey_stick_and_puck:"
   )
 
+# hide the hamburger and the modify the footer
+st.markdown(hide_menu, unsafe_allow_html=True)
+
 names = ["Martin Kierot", "Force8 Coach", "General Access" ]
 usernames = ["mkierot", "f8c", "gaccess"]
 
