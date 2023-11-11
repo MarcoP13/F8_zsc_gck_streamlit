@@ -26,7 +26,7 @@ footer:after{
     position:relativ;
     bottom:0px;
 }
-</style>""" 
+</style>"""  
 
 
 def split_df_by_test(df_final_players):
