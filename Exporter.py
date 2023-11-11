@@ -12,24 +12,25 @@ from panoply_loader import *
 import plotly.express as px
 import plotly.graph_objects as go
 
-hide_menu = """
-<style>
-#MainMenu {
-    visibility: hidden;
-}
-header {
-    visibility: hidden;
-}
-footer {
-    visibility: visible;
-}
-footer:after{
-    content:"Created by Force8 - 2023";
-    display:block;
-    position:relativ;
-    bottom:0px;
-}
-</style>"""  
+hide_st_style = """
+            <style>
+            #MainMenu { visibility: hidden; }
+            header { visibility: hidden; }
+            footer { visibility: visible; }
+            .css-10pw50.ea3mdgi1 { visibility: hidden; }
+            .block-container.css-z5fcl4.ea3mdgi4 {
+                padding-top: 0px !important;
+                padding-left: 0px
+                padding-right: 0px
+            }
+            footer:before{
+                content:"Created by Force8 - 2023";
+                display:block;
+                position:relativ;
+                bottom:0px;
+            }
+            </style>
+            """  
 
 
 def split_df_by_test(df_final_players):
@@ -65,7 +66,7 @@ st.set_page_config(
     )
 
 # hide the hamburger and the modify the footer
-st.markdown(hide_menu, unsafe_allow_html=True)
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
 names = ["Martin Kierot", "Force8 Coach", "General Access" ]
 usernames = ["mkierot", "f8c", "gaccess"]
@@ -229,7 +230,7 @@ if authentication_status:
     # # all test of the selected players
     if option == 'Players Results':
         # df_final_players --> line 164
-        st.divider()
+        # st.divider()
         st.subheader("Player Results ")
         
         if not df_final_players.empty:
