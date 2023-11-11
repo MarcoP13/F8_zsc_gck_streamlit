@@ -20,8 +20,8 @@ hide_st_style = """
             .css-10pw50.ea3mdgi1 { visibility: hidden; }
             .block-container.css-z5fcl4.ea3mdgi4 {
                 padding-top: 0px !important;
-                padding-left: 0px !important;
-                padding-right: 0px !important;
+                padding-left: 15px !important;
+                padding-right: 10px !important;
             }
             footer:before{
                 content:"Created by Force8 - 2023";
@@ -176,7 +176,7 @@ if authentication_status:
         if selected_players is None:
             selected_players = []
     except:
-        st.header("Select a team")
+        st.subheader("Please select a team or a player to see the player results")
     
     try:
         df_final_players = df_final[df_final['name'].isin(selected_players)]
@@ -325,9 +325,8 @@ if authentication_status:
             st.divider()
             st.subheader("Test Results ")
             
-            # if not df_final_players.empty:
-            # if not df_final_tests.empty:
-            df_final_tests = df_final_tests[df_final_tests['name'].isin(selected_players)]
+            if not df_final_players.empty:
+                df_final_tests = df_final_tests[df_final_tests['name'].isin(selected_players)]
             df_final_tests = df_final_tests.reindex(columns=['name_battery', 'date', 'text', 'test_result', 'unit', 'comment', 'name', 'dob', 'gender', 'nationality', 'pos'])
             df_final_tests['text'] = df_final_tests['text'].replace(['"', "'"], "", regex=True)
             # df_final_tests['test_result'] = df_final_tests['test_result'].replace(',', ".", regex=True)
@@ -575,7 +574,8 @@ if authentication_status:
                 # Add a button to export the dataframe to a CSV file
                 if st.button('Export to CSV - players (wide)'):
                     try:
-                        df_long_players.to_csv(desktop_path / "player_tests_wide.csv", index=False)
+                        df_long_players.to_csv("player_tests_wide.csv", index=False)
+                        # df_long_players.to_csv(desktop_path / "player_tests_wide.csv", index=False)
                         st.success("Export to CSV successful!")
                     except Exception as e:
                         st.error(f"Export to CSV failed! {e}")
