@@ -6,3 +6,4 @@ pickleshare==0.7.5
 # extra-streamlit-components >= 0.1.60
 streamlit
 streamlit-authenticator==0.1.5 
+os

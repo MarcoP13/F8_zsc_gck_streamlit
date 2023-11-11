@@ -66,8 +66,8 @@ def get_desktop_path():
     return desktop_path
 
 # Get the user's desktop path.
-# desktop_path = get_desktop_path()
-desktop_path = pathlib.Path.home() / "Desktop"
+desktop_path = get_desktop_path()
+# desktop_path = pathlib.Path.home() / "Desktop"
 # ****
 # Page config 
 # ****
