@@ -95,7 +95,7 @@ def fetch_agegroup():
 
 @st.cache_data
 def fetch_club_agegroup():
-    rows = client.query('SELECT id_season, id_agegroup FROM panoply.mysql_tb_club_season_agegroup_skill_level WHERE id_club=5').result()
+    rows = client.query('SELECT id_season, id_agegroup FROM panoply.mysql_tb_club_season_agegroup_skill_level WHERE id_club=5 AND id_season>=5').result()
     rows_list = [dict(row) for row in rows]
     df = pd.DataFrame(rows_list)
     df.rename(columns={'id': 'id_agegroup'}, inplace=True)
