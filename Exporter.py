@@ -277,10 +277,17 @@ if authentication_status:
                         st.dataframe(df_short, use_container_width=True, hide_index=True)
                     with col2:
                         fig = px.line(df, x='date', y='test_result', color='name', markers=True) 
+                        
                         fig.update_traces(textposition="bottom right")
+                        # Turn off x-axes and y-axes descriptions
+                        fig.update_xaxes(title="")
+                        fig.update_yaxes(title="")
                         st.plotly_chart(fig, theme="streamlit", use_container_width=True)
                     with col3:
                         fig = px.box(df, y="test_result")
+                        # Turn off x-axes and y-axes descriptions
+                        fig.update_xaxes(title="")
+                        fig.update_yaxes(title="")
                         st.plotly_chart(fig, theme="streamlit", use_container_width=True)
                         
                 with tab2:
@@ -291,6 +298,9 @@ if authentication_status:
                         df_best = df_best.sort_values(by='test_result', ascending=True)
                         fig = px.histogram(df_best, x='name', y='test_result', marginal = 'box', nbins=10, title='Best Test Result', labels={'name': '', 'test_result': 'Best Result'})
                         # fig.update_layout(bargap=0.2)
+                        # Turn off x-axes and y-axes descriptions
+                        fig.update_xaxes(title="")
+                        fig.update_yaxes(title="")
                         st.plotly_chart(fig, theme="streamlit", use_container_width=True)
                         
                     with col2:
@@ -299,6 +309,9 @@ if authentication_status:
                         df_avg = df_avg.sort_values(by='test_result', ascending=True)
                         fig = px.histogram(df_avg, x='name', y='test_result', marginal = 'box', title='Average Test Result', labels={'name': ''})
                         fig.update_layout(bargap=0.2)
+                        # Turn off x-axes and y-axes descriptions
+                        fig.update_xaxes(title="")
+                        fig.update_yaxes(title="")
                         st.plotly_chart(fig, theme="streamlit", use_container_width=True)
                         
                 with tab3:
@@ -315,6 +328,9 @@ if authentication_status:
                         
                     fig_go = go.Figure()
                     fig_go.add_trace(go.Box(x=df['month year'], y=df['test_result'], name='results per month'))
+                    # Turn off x-axes and y-axes descriptions
+                    fig.update_xaxes(title="")
+                    fig.update_yaxes(title="")
                     st.plotly_chart(fig_go, theme="streamlit", use_container_width=True)  
                             
     # ************************************************************************************************************
@@ -373,6 +389,9 @@ if authentication_status:
                     with col2:
                         fig = px.line(df, x='date', y='test_result', color='name', markers=True) 
                         fig.update_traces(textposition="bottom right")
+                        # Turn off x-axes and y-axes descriptions
+                        fig.update_xaxes(title="")
+                        fig.update_yaxes(title="")
                         st.plotly_chart(fig, theme="streamlit", use_container_width=True)
                     with col3:
                         fig = px.box(df, y="test_result")
@@ -384,6 +403,9 @@ if authentication_status:
                         # df_best = df.groupby(['name', 'date'])['test_result'].max().reset_index()
                         df_best = df.groupby(['name'])['test_result'].max().reset_index()
                         df_best = df_best.sort_values(by='test_result', ascending=True)
+                        # Turn off x-axes and y-axes descriptions
+                        fig.update_xaxes(title="")
+                        fig.update_yaxes(title="")
                         fig = px.histogram(df_best, x='name', y='test_result', marginal = 'box', nbins=10, title='Best Test Result', labels={'name': '', 'test_result': 'Best Result'})
                         # fig.update_layout(bargap=0.2)
                         st.plotly_chart(fig, theme="streamlit", use_container_width=True)
@@ -394,6 +416,9 @@ if authentication_status:
                         df_avg = df_avg.sort_values(by='test_result', ascending=True)
                         fig = px.histogram(df_avg, x='name', y='test_result', marginal = 'box', title='Average Test Result', labels={'name': ''})
                         fig.update_layout(bargap=0.2)
+                        # Turn off x-axes and y-axes descriptions
+                        fig.update_xaxes(title="")
+                        fig.update_yaxes(title="")
                         st.plotly_chart(fig, theme="streamlit", use_container_width=True)
                         
                 with tab3:
@@ -410,6 +435,9 @@ if authentication_status:
                         
                     fig_go = go.Figure()
                     fig_go.add_trace(go.Box(x=df['month year'], y=df['test_result'], name='results per month'))
+                    # Turn off x-axes and y-axes descriptions
+                    fig.update_xaxes(title="")
+                    fig.update_yaxes(title="")
                     st.plotly_chart(fig_go, theme="streamlit", use_container_width=True)  
                 
     # ************************************************************************************************************
@@ -464,9 +492,15 @@ if authentication_status:
                 with col2:
                     fig = px.line(df, x='date', y='test_result', color='name', markers=True) 
                     fig.update_traces(textposition="bottom right")
+                    # Turn off x-axes and y-axes descriptions
+                    fig.update_xaxes(title="")
+                    fig.update_yaxes(title="")
                     st.plotly_chart(fig, theme="streamlit", use_container_width=True)
                 with col3:
                     fig = px.box(df, y="test_result")
+                    # Turn off x-axes and y-axes descriptions
+                    fig.update_xaxes(title="")
+                    fig.update_yaxes(title="")
                     st.plotly_chart(fig, theme="streamlit", use_container_width=True)
                     
             with tab2:
@@ -476,6 +510,9 @@ if authentication_status:
                     df_best = df.groupby(['name'])['test_result'].max().reset_index()
                     df_best = df_best.sort_values(by='test_result', ascending=True)
                     fig = px.histogram(df_best, x='name', y='test_result', marginal = 'box', nbins=10, title='Best Test Result')
+                    # Turn off x-axes and y-axes descriptions
+                    fig.update_xaxes(title="")
+                    fig.update_yaxes(title="")
                     # fig = px.histogram(df_best, x='name', y='test_result', marginal = 'box', nbins=10, title='Best Test Result', labels={'name': '', 'test_result': 'Best Result'})
                     # fig.update_layout(bargap=0.2)
                     st.plotly_chart(fig, theme="streamlit", use_container_width=True)
@@ -485,6 +522,9 @@ if authentication_status:
                     df_avg = df.groupby(['name'])['test_result'].mean().reset_index()
                     df_avg = df_avg.sort_values(by='test_result', ascending=True)
                     fig = px.histogram(df_avg, x='name', y='test_result', marginal = 'box', title='Average Test Result')
+                    # Turn off x-axes and y-axes descriptions
+                    fig.update_xaxes(title="")
+                    fig.update_yaxes(title="")
                     # fig = px.histogram(df_avg, x='name', y='test_result', marginal = 'box', title='Average Test Result', labels={'name': ''})
                     fig.update_layout(bargap=0.2)
                     st.plotly_chart(fig, theme="streamlit", use_container_width=True)
@@ -503,6 +543,9 @@ if authentication_status:
                     
                 fig_go = go.Figure()
                 fig_go.add_trace(go.Box(x=df['month year'], y=df['test_result'], name='results per month'))
+                # Turn off x-axes and y-axes descriptions
+                fig.update_xaxes(title="")
+                fig.update_yaxes(title="")
                 st.plotly_chart(fig_go, theme="streamlit", use_container_width=True)  
                         
     # # ************************************************************************************************************
