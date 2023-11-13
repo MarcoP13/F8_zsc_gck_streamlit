@@ -475,7 +475,8 @@ if authentication_status:
                     # df_best = df.groupby(['name', 'date'])['test_result'].max().reset_index()
                     df_best = df.groupby(['name'])['test_result'].max().reset_index()
                     df_best = df_best.sort_values(by='test_result', ascending=True)
-                    fig = px.histogram(df_best, x='name', y='test_result', marginal = 'box', nbins=10, title='Best Test Result', labels={'name': '', 'test_result': 'Best Result'})
+                    fig = px.histogram(df_best, x='name', y='test_result', marginal = 'box', nbins=10, title='Best Test Result')
+                    # fig = px.histogram(df_best, x='name', y='test_result', marginal = 'box', nbins=10, title='Best Test Result', labels={'name': '', 'test_result': 'Best Result'})
                     # fig.update_layout(bargap=0.2)
                     st.plotly_chart(fig, theme="streamlit", use_container_width=True)
                     
@@ -483,7 +484,8 @@ if authentication_status:
                     # df_avg = df.groupby(['name', 'date'])['test_result'].mean().reset_index()
                     df_avg = df.groupby(['name'])['test_result'].mean().reset_index()
                     df_avg = df_avg.sort_values(by='test_result', ascending=True)
-                    fig = px.histogram(df_avg, x='name', y='test_result', marginal = 'box', title='Average Test Result', labels={'name': ''})
+                    fig = px.histogram(df_avg, x='name', y='test_result', marginal = 'box', title='Average Test Result')
+                    # fig = px.histogram(df_avg, x='name', y='test_result', marginal = 'box', title='Average Test Result', labels={'name': ''})
                     fig.update_layout(bargap=0.2)
                     st.plotly_chart(fig, theme="streamlit", use_container_width=True)
                     
