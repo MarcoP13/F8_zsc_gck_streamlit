@@ -721,13 +721,6 @@ if authentication_status:
                 df_long = df_long.reset_index()
                 st.dataframe(df_long, use_container_width=True, hide_index=True)
                 
-                # Add a button to export the dataframe to a CSV file
-                if st.button('Export to CSV - all'):
-                    try:
-                        df_long.to_csv(desktop_path / "result_all.csv", index=False)
-                        st.success("Export to CSV successful!")
-                    except Exception as e:
-                        st.error(f"Export to CSV failed! {e}")
             with col2:
                 df_final = df_final.reindex(columns=['name','date','text','test_result','unit'])
                 df_short = df_final.reindex(columns=['name','date','test_result','unit'])
