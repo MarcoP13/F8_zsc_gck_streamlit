@@ -416,7 +416,7 @@ if authentication_status:
     # Selected Batteries   
     if option == 'Selected Batteries':
         # # ************************************************************************************************************
-        # df_final_batteries = df_final[df_final['name_battery'].isin(selected_batteries)]
+        df_final_batteries = df_final[df_final['name_battery'].isin(selected_batteries)]
         st.subheader("Batteries Results")
         # if not df_final_batteries.empty:
         if not df_final_players.empty:
@@ -560,6 +560,7 @@ if authentication_status:
     if option == 'CSV Export':
         st.header("CSV Exports")
         st.subheader("Player Results")
+        
         if not df_final_players.empty:
             df_final_players['date'] = pd.to_datetime(df_final_players['date'])
             df_final_players['day'] = df_final_players['date'].dt.day
@@ -658,7 +659,7 @@ if authentication_status:
             df_final_batteries = df_final_batteries.assign(month_year=lambda x: x['month'].astype(str) + '-' + x['year'].astype(str))
             df_final_batteries = df_final_batteries.rename(columns={'month_year': 'month year'})
             
-            with st.expander("Export Selected Batteries", expanded=False):
+            with st.expander("Export Selected Batteries", expanded=True):
                 
                 df_long_batteries = pd.pivot_table(df_final_batteries, values=['test_result'], index=['name'], columns=['text','month year'], 
                                                 aggfunc={'test_result': max})
