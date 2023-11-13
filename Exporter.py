@@ -1,7 +1,7 @@
 import os
 import pickle
-import pathlib
-from pathlib import Path
+# import pathlib
+# from pathlib import Path
 import streamlit as st
 import streamlit_authenticator as stauth
 
@@ -55,68 +55,6 @@ def split_df_by_player(df_final_players):
     return df_dict
 
 
-# def save_file(data, extension, default_dir=None):
-#     default_filename = f"untitled{extension}"
-
-#     if default_dir:
-#         default_dir = pathlib.Path(default_dir)
-#         if default_dir.exists():
-#             default_filename = default_dir / default_filename
-#         else:
-#             default_dir = None
-
-#     save_path = st.file_picker(
-#         "Choose a file to save", type=extension, initial_file=default_filename
-#     )
-
-#     if save_path:
-#         with open(save_path, "w") as f:
-#             f.write(data)
-#         st.success(f"Saved file to: {save_path}")
-#     else:
-#         st.error("File save was cancelled.")
-
-# save_file("This is a test file", ".txt", default_dir=pathlib.Path.home() / "Documents")
-
-
-# def save_to_local_directory():
-#     # Let the user choose a local file
-#     uploaded_file = st.file_uploader("Choose a file to upload", type=['csv'])
-
-#     if uploaded_file is not None:
-#         # Let the user choose a local folder to save the file
-#         desktop_path = st.file_uploader("Choose a folder to save the file", type=['folder'])
-
-#         if desktop_path is not None:
-#             # Read the file into a pandas DataFrame
-#             df_long_tests = pd.read_csv(uploaded_file)
-
-#             # Save the file to the user-specified directory
-#             file_name = "player_tests_wide.csv"
-#             save_path = os.path.join(desktop_path, file_name)
-#             df_long_tests.to_csv(save_path, index=False)
-
-#             st.success(f"Saved file to: {save_path}")
-#         else:
-#             st.error("No folder was selected. Please try again.")
-#     else:
-#         st.error("No file was uploaded. Please try again.")
-
-
-# This function returns the path to the user's desktop
-# def get_desktop_path():
-#     if os.name == 'nt': # If the user is on Windows
-#         desktop_path = os.path.join(os.path.expanduser('~'), 'Desktop')
-#     elif os.name == 'posix': # If the user is on macOS or Linux
-#         desktop_path = os.path.join(os.path.expanduser('~'), 'Desktop')
-#     else:
-#         desktop_path = None
-#         st.error('This operating system is not supported.')
-#     return desktop_path
-
-# Get the user's desktop path.
-# desktop_path = get_desktop_path()
-# desktop_path = pathlib.Path.home() / "Desktop"
 
 # ****
 # Page config 
@@ -640,7 +578,6 @@ if authentication_status:
                 st.dataframe(df_long_players, use_container_width=True, hide_index=True)
                 
                 csv = convert_df(df_long_players)
-
                 st.download_button(
                     "CSV Export",
                     csv,
@@ -648,49 +585,15 @@ if authentication_status:
                     "text/csv",
                     # key='browser-data'
                 )
-                    
-                # if st.button('Export to CSV - players (wide) NEW'):
-                #     # Let the user choose a local folder to save the file
-                #     desktop_path = st.file_uploader("Choose a folder to save the file", type=['folder'])
-
-                #     if desktop_path is not None:
-                #         # Save the file to the user-specified directory
-                #         file_name = "player_tests_wide.csv"
-                #         save_path = os.path.join(desktop_path, file_name)
-                #         df_long_players.to_csv(save_path, index=False)
-
-                #         st.success(f"Saved file to: {save_path}")
-                #     else:
-                #         st.error("No folder was selected. Please try again.")
-                    # save_file(df_final_players, ".csv", default_dir=pathlib.Path.home() / "Documents")
-                    # try:
-                    #     # df_long_players.to_csv("player_tests_wide.csv", index=False)
-                    #     df_long_players.to_csv(desktop_path / "player_tests_wide.csv", index=False)
-                    #     st.success("Export to CSV successful!")
-                    # except Exception as e:
-                    #     st.error(f"Export to CSV failed! {e}")
                 
                 st.dataframe(df_final_players, use_container_width=True, hide_index=True)
-                # Add a button to export the dataframe to a CSV file
-                if st.button('Export to CSV - players (long) NEW'):
-                    # Let the user choose a local folder to save the file
-                    desktop_path = st.file_uploader("Choose a folder to save the export", type=['folder'])
-
-                    if desktop_path is not None:
-                        # Save the file to the user-specified directory
-                        file_name = "player_tests_long.csv"
-                        save_path = os.path.join(desktop_path, file_name)
-                        df_final_players.to_csv(save_path, index=False)
-
-                        st.success(f"Saved file to: {save_path}")
-                    else:
-                        st.error("No folder was selected. Please try again.")
-                    # save_file(df_final_players, ".csv", default_dir=pathlib.Path.home() / "Documents")
-                    # try:
-                    #     df_final_players.to_csv(desktop_path / "player_tests.csv", index=False)
-                    #     st.success("Export to CSV successful!")
-                    # except Exception as e:
-                    #     st.error(f"Export to CSV failed! {e}")
+                csv = convert_df(df_final_players)
+                st.download_button(
+                    "CSV Export",
+                    csv,
+                    "player_tests_long.csv",
+                    "text/csv",
+                )
         else:
             st.text("Please select at least one player") 
         
@@ -715,38 +618,28 @@ if authentication_status:
                                                 aggfunc={'test_result': max})
                 df_long_tests = df_long_tests.reset_index()
                 st.dataframe(df_long_tests, use_container_width=True, hide_index=True)
-                # Add a button to export the dataframe to a CSV file
-                if st.button('Export to CSV - tests (wide)'):
-                    try:
-                        # Let the user choose a local folder to save the file
-                        desktop_path = st.file_uploader("Choose a folder to save the file", type=['folder'])
-
-                        if desktop_path is not None:
-                            # Save the file to the user-specified directory
-                            file_name = "player_tests_wide.csv"
-                            save_path = os.path.join(desktop_path, file_name)
-                            df_long_tests.to_csv(save_path, index=False)
-
-                            st.success(f"Saved file to: {save_path}")
-                        else:
-                            st.error("No folder was selected. Please try again.")
-                        
-                        
-                        # df_long_tests.to_csv(desktop_path / "player_tests_wide.csv", index=False)
-                        # st.success("Export to CSV successful!")
-                    except Exception as e:
-                        st.error(f"Export to CSV failed! {e}")
+                
+                csv = convert_df(df_long_tests)
+                st.download_button(
+                    "CSV Export",
+                    csv,
+                    "tests_wide.csv",
+                    "text/csv",
+                    # key='browser-data'
+                )
                         
                 st.divider()
                 
                 st.dataframe(df_final_tests, use_container_width=True, hide_index=True)
-                # Add a button to export the dataframe to a CSV file
-                if st.button('Export to CSV - tests'):
-                    try:
-                        df_final_tests.to_csv(desktop_path / "selected_tests.csv", index=False)
-                        st.success("Export to CSV successful!")
-                    except Exception as e:
-                        st.error(f"Export to CSV failed! {e}")
+                
+                csv = convert_df(df_final_tests)
+                st.download_button(
+                    "CSV Export",
+                    csv,
+                    "tests_long.csv",
+                    "text/csv",
+                    # key='browser-data'
+                )
         else:
             st.text("Please select at least one test and one player")  
              
@@ -771,13 +664,15 @@ if authentication_status:
                                                 aggfunc={'test_result': max})
                 df_long_batteries = df_long_batteries.reset_index()
                 st.dataframe(df_long_batteries, use_container_width=True, hide_index=True)
-                # Add a button to export the dataframe to a CSV file
-                if st.button('Export to CSV - batteries (wide)'):
-                    try:
-                        df_long_players.to_csv(desktop_path / "batteries_tests_wide.csv", index=False)
-                        st.success("Export to CSV successful!")
-                    except Exception as e:
-                        st.error(f"Export to CSV failed! {e}")
+                
+                csv = convert_df(df_long_batteries)
+                st.download_button(
+                    "CSV Export",
+                    csv,
+                    "batteries_wide.csv",
+                    "text/csv",
+                    # key='browser-data'
+                )
                 # ****
                 st.divider()
                 df_final_batteries = df_final_batteries.reindex(columns=['name_battery','name','date','text','test_result','unit','comment','gender','dob','pos','nationality'])
@@ -785,13 +680,14 @@ if authentication_status:
                 # st.plotly_chart(fig, theme="streamlit", use_container_width=True)
                 st.dataframe(df_final_batteries, use_container_width=True, hide_index=True)
                 
-                # Add a button to export the dataframe to a CSV file
-                if st.button('Export to CSV - batteries'):
-                    try:
-                        df_final_batteries.to_csv(desktop_path / "batteries_tests.csv", index=False)
-                        st.success("Export to CSV successful!")
-                    except Exception as e:
-                        st.error(f"Export to CSV failed! {e}")
+                csv = convert_df(df_final_batteries)
+                st.download_button(
+                    "CSV Export",
+                    csv,
+                    "batteries.csv",
+                    "text/csv",
+                    # key='browser-data'
+                )
         else:
             st.text("Please select at least one battery")                 
                 
