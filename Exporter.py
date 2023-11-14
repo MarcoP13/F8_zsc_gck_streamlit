@@ -622,11 +622,12 @@ if authentication_status:
         st.subheader("Player Results")
         
         if not df_final_players.empty:
-            df_final_players = clean_df(df_final_players)
             
             with st.expander("Export Player Results (all tests done by the selected players)", expanded=True):  
                 st.subheader(f"All results of the selected players from {selected_start} to {selected_end}")
                 
+                df_final_players = clean_df(df_final_players)
+                df_final_players = df_final_players.sort_values(by='year month')
                 df_long_players = pd.pivot_table(df_final_players, values=['test_result'], index=['name'], columns=['text','year month'], 
                                                 aggfunc={'test_result': max})
                 df_long_players = df_long_players.reset_index()
