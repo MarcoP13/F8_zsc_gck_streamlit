@@ -54,7 +54,22 @@ def split_df_by_player(df_final_players):
         df_dict[name] = df_final_players[df_final_players['name'] == name]
     return df_dict
 
-
+def clean_df(df):
+    # get rid of all 0 values
+    df = df.loc[df['test_result']!=0]
+    df['text'] = df['text'].replace(['"', "'"], "", regex=True)
+    df['date'] = pd.to_datetime(df['date'])
+    df['day'] = df['date'].dt.day
+    df['month'] = df['date'].dt.month
+    df['year'] = df['date'].dt.year
+    df = df.drop('day', axis=1)
+    df = df.assign(month_year=lambda x: x['year'].astype(str) + '-' + x['month'].astype(str))
+    df = df.rename(columns={'month_year': 'year month'})
+    df['year-month'] = pd.to_datetime(df['year month'], format='%Y-%m').dt.floor('D')
+    # Now sort the dataframe based on the 'year-month' column
+    df = df.sort_values(by='year month')
+    
+    return df
 
 # ****
 # Page config 
@@ -322,12 +337,12 @@ if authentication_status:
                     # Drop the 'day' column
                     df = df.drop('day', axis=1)
                     # Merge the 'month' and 'year' columns
-                    df = df.assign(month_year=lambda x: x['month'].astype(str) + '-' + x['year'].astype(str))
+                    df = df.assign(month_year=lambda x: x['year'].astype(str) + '-' + x['month'].astype(str))
                     # Rename the 'month_year' column
-                    df = df.rename(columns={'month_year': 'month year'})
+                    df = df.rename(columns={'month_year': 'year month'})
                         
                     fig_go = go.Figure()
-                    fig_go.add_trace(go.Box(x=df['month year'], y=df['test_result'], name='results per month'))
+                    fig_go.add_trace(go.Box(x=df['year month'], y=df['test_result'], name='results per month'))
                     # Turn off x-axes and y-axes descriptions
                     fig.update_xaxes(title="")
                     fig.update_yaxes(title="")
@@ -429,12 +444,12 @@ if authentication_status:
                     # Drop the 'day' column
                     df = df.drop('day', axis=1)
                     # Merge the 'month' and 'year' columns
-                    df = df.assign(month_year=lambda x: x['month'].astype(str) + '-' + x['year'].astype(str))
+                    df = df.assign(month_year=lambda x: x['year'].astype(str) + '-' + x['month'].astype(str))
                     # Rename the 'month_year' column
-                    df = df.rename(columns={'month_year': 'month year'})
+                    df = df.rename(columns={'month_year': 'year month'})
                         
                     fig_go = go.Figure()
-                    fig_go.add_trace(go.Box(x=df['month year'], y=df['test_result'], name='results per month'))
+                    fig_go.add_trace(go.Box(x=df['year month'], y=df['test_result'], name='results per month'))
                     # Turn off x-axes and y-axes descriptions
                     fig.update_xaxes(title="")
                     fig.update_yaxes(title="")
@@ -537,12 +552,12 @@ if authentication_status:
                 # Drop the 'day' column
                 df = df.drop('day', axis=1)
                 # Merge the 'month' and 'year' columns
-                df = df.assign(month_year=lambda x: x['month'].astype(str) + '-' + x['year'].astype(str))
+                df = df.assign(month_year=lambda x: x['year'].astype(str) + '-' + x['month'].astype(str))
                 # Rename the 'month_year' column
-                df = df.rename(columns={'month_year': 'month year'})
+                df = df.rename(columns={'month_year': 'year month'})
                     
                 fig_go = go.Figure()
-                fig_go.add_trace(go.Box(x=df['month year'], y=df['test_result'], name='results per month'))
+                fig_go.add_trace(go.Box(x=df['year month'], y=df['test_result'], name='results per month'))
                 # Turn off x-axes and y-axes descriptions
                 fig.update_xaxes(title="")
                 fig.update_yaxes(title="")
@@ -607,18 +622,12 @@ if authentication_status:
         st.subheader("Player Results")
         
         if not df_final_players.empty:
-            df_final_players['date'] = pd.to_datetime(df_final_players['date'])
-            df_final_players['day'] = df_final_players['date'].dt.day
-            df_final_players['month'] = df_final_players['date'].dt.month
-            df_final_players['year'] = df_final_players['date'].dt.year
-            df_final_players = df_final_players.drop('day', axis=1)
-            df_final_players = df_final_players.assign(month_year=lambda x: x['month'].astype(str) + '-' + x['year'].astype(str))
-            df_final_players = df_final_players.rename(columns={'month_year': 'month year'})
+            df_final_players = clean_df(df_final_players)
             
             with st.expander("Export Player Results (all tests done by the selected players)", expanded=True):  
                 st.subheader(f"All results of the selected players from {selected_start} to {selected_end}")
                 
-                df_long_players = pd.pivot_table(df_final_players, values=['test_result'], index=['name'], columns=['text','month year'], 
+                df_long_players = pd.pivot_table(df_final_players, values=['test_result'], index=['name'], columns=['text','year month'], 
                                                 aggfunc={'test_result': max})
                 df_long_players = df_long_players.reset_index()
                 st.dataframe(df_long_players, use_container_width=True, hide_index=True)
@@ -646,21 +655,12 @@ if authentication_status:
         st.divider()                  
         st.subheader("Selected Tests")
         if not df_final_tests.empty:
-            # get rid of all 0 values
-            df_final_tests = df_final_tests.loc[df_final_tests['test_result']!=0]
-            df_final_tests['text'] = df_final_tests['text'].replace(['"', "'"], "", regex=True)
-            df_final_tests['date'] = pd.to_datetime(df_final_tests['date'])
-            df_final_tests['day'] = df_final_tests['date'].dt.day
-            df_final_tests['month'] = df_final_tests['date'].dt.month
-            df_final_tests['year'] = df_final_tests['date'].dt.year
-            df_final_tests = df_final_tests.drop('day', axis=1)
-            df_final_tests = df_final_tests.assign(month_year=lambda x: x['month'].astype(str) + '-' + x['year'].astype(str))
-            df_final_tests = df_final_tests.rename(columns={'month_year': 'month year'})
-            
+            df_final_tests = clean_df(df_final_tests)
+
             with st.expander("Export Selected Test Results", expanded=True):  
                 # ****
                 st.subheader(f"Test results of the selected tests fom {selected_start} to {selected_end}")
-                df_long_tests = pd.pivot_table(df_final_tests, values=['test_result'], index=['name'], columns=['text','month year'], 
+                df_long_tests = pd.pivot_table(df_final_tests, values=['test_result'], index=['name'], columns=['text','year month'], 
                                                 aggfunc={'test_result': max})
                 df_long_tests = df_long_tests.reset_index()
                 st.dataframe(df_long_tests, use_container_width=True, hide_index=True)
@@ -692,21 +692,11 @@ if authentication_status:
         st.divider()                            
         st.subheader("Selected Batteries")                    
         if not df_final_batteries.empty: 
-            # get rid of all 0 values
-            df_final_batteries = df_final_batteries.loc[df_final_batteries['test_result']!=0]
-            df_final_batteries['text'] = df_final_batteries['text'].replace(['"', "'"], "", regex=True)
-            
-            df_final_batteries['date'] = pd.to_datetime(df_final_batteries['date'])
-            df_final_batteries['day'] = df_final_batteries['date'].dt.day
-            df_final_batteries['month'] = df_final_batteries['date'].dt.month
-            df_final_batteries['year'] = df_final_batteries['date'].dt.year
-            df_final_batteries = df_final_batteries.drop('day', axis=1)
-            df_final_batteries = df_final_batteries.assign(month_year=lambda x: x['month'].astype(str) + '-' + x['year'].astype(str))
-            df_final_batteries = df_final_batteries.rename(columns={'month_year': 'month year'})
+            df_final_batteries = clean_df(df_final_batteries)
             
             with st.expander("Export Selected Batteries", expanded=True):
                 
-                df_long_batteries = pd.pivot_table(df_final_batteries, values=['test_result'], index=['name'], columns=['text','month year'], 
+                df_long_batteries = pd.pivot_table(df_final_batteries, values=['test_result'], index=['name'], columns=['text','year month'], 
                                                 aggfunc={'test_result': max})
                 df_long_batteries = df_long_batteries.reset_index()
                 st.dataframe(df_long_batteries, use_container_width=True, hide_index=True)
@@ -746,6 +736,7 @@ if authentication_status:
             df_final = df_final.reindex(columns=['name_battery', 'date', 'text', 'description', 'test_result', 'unit', 'comment', 'name', 'dob', 'gender', 'nationality', 'pos'])
             
             # get rid of all 0 values
+            
             df_final = df_final.loc[df_final['test_result']!=0]
             df_final['text'] = df_final['text'].replace(['"', "'"], "", regex=True)
             
@@ -754,14 +745,14 @@ if authentication_status:
             df_final['month'] = df_final['date'].dt.month
             df_final['year'] = df_final['date'].dt.year
             df_final = df_final.drop('day', axis=1)
-            df_final = df_final.assign(month_year=lambda x: x['month'].astype(str) + '-' + x['year'].astype(str))
-            df_final = df_final.rename(columns={'month_year': 'month year'})
+            df_final = df_final.assign(month_year=lambda x: x['year'].astype(str) + '-' + x['month'].astype(str))
+            df_final = df_final.rename(columns={'month_year': 'year month'})
             
             st.dataframe(df_final, use_container_width=True, hide_index=True) 
             
             col1, col2 = st.columns([3,1])
             with col1:
-                df_long = pd.pivot_table(df_final, values=['test_result'], index=['name'], columns=['month year','text'], 
+                df_long = pd.pivot_table(df_final, values=['test_result'], index=['name'], columns=['text','year month'], 
                                             aggfunc={'test_result': max})
                 df_long = df_long.reset_index()
                 st.dataframe(df_long, use_container_width=True, hide_index=True)
