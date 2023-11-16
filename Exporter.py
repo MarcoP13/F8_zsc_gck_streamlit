@@ -59,16 +59,16 @@ def clean_df(df):
     df = df.loc[df['test_result']!=0]
     df['text'] = df['text'].replace(['"', "'"], "", regex=True)
     df['date'] = pd.to_datetime(df['date'])
-    df['day'] = df['date'].dt.day
-    df['month'] = df['date'].dt.month
-    df['year'] = df['date'].dt.year
-    df = df.drop('day', axis=1)
-    df = df.assign(month_year=lambda x: x['year'].astype(str) + '-' + x['month'].astype(str))
-    df = df.rename(columns={'month_year': 'year month'})
-    # df['year month'] = pd.to_datetime(df['year month'], format='%Y-%m').dt.floor('D')
-    # df = df.sort_values(by='year month')
-    df = df.sort_values(by='date')
+    # df['day'] = df['date'].dt.day
+    # df['month'] = df['date'].dt.month
+    # df['year'] = df['date'].dt.year
+    # df = df.assign(year_month=lambda x: x['year'].astype(str) + '-' + x['month'].astype(str))
+    # df['year_month'] = pd.to_datetime(df['year_month'], format='%Y-%m').dt.floor('D')
     
+    # Creating the 'year_month' column based on the 'date' column
+    df['year_month'] = df['date'].dt.to_period('M')
+    df = df.sort_values(by='year_month')
+    df = df.rename(columns={'year_month': 'year month'})
     return df
 
 # ****
