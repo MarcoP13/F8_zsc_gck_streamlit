@@ -65,9 +65,9 @@ def clean_df(df):
     df = df.drop('day', axis=1)
     df = df.assign(month_year=lambda x: x['year'].astype(str) + '-' + x['month'].astype(str))
     df = df.rename(columns={'month_year': 'year month'})
-    df['year-month'] = pd.to_datetime(df['year month'], format='%Y-%m').dt.floor('D')
-    # Now sort the dataframe based on the 'year-month' column
-    df = df.sort_values(by='year month')
+    # df['year month'] = pd.to_datetime(df['year month'], format='%Y-%m').dt.floor('D')
+    # df = df.sort_values(by='year month')
+    df = df.sort_values(by='date')
     
     return df
 
@@ -622,12 +622,10 @@ if authentication_status:
         st.subheader("Player Results")
         
         if not df_final_players.empty:
-            
             with st.expander("Export Player Results (all tests done by the selected players)", expanded=True):  
                 st.subheader(f"All results of the selected players from {selected_start} to {selected_end}")
                 
                 df_final_players = clean_df(df_final_players)
-                df_final_players = df_final_players.sort_values(by='year month')
                 df_long_players = pd.pivot_table(df_final_players, values=['test_result'], index=['name'], columns=['text','year month'], 
                                                 aggfunc={'test_result': max})
                 df_long_players = df_long_players.reset_index()
@@ -656,6 +654,9 @@ if authentication_status:
         st.divider()                  
         st.subheader("Selected Tests")
         if not df_final_tests.empty:
+            
+            if not df_final_players.empty:
+                df_final_tests = df_final_tests[df_final_tests['name'].isin(selected_players)]
             df_final_tests = clean_df(df_final_tests)
 
             with st.expander("Export Selected Test Results", expanded=True):  
@@ -693,6 +694,8 @@ if authentication_status:
         st.divider()                            
         st.subheader("Selected Batteries")                    
         if not df_final_batteries.empty: 
+            if not df_final_players.empty:
+                df_final_batteries = df_final_batteries[df_final_batteries['name'].isin(selected_players)]
             df_final_batteries = clean_df(df_final_batteries)
             
             with st.expander("Export Selected Batteries", expanded=True):
