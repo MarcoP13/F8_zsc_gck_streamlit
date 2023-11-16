@@ -627,7 +627,8 @@ if authentication_status:
                 st.subheader(f"All results of the selected players from {selected_start} to {selected_end}")
                 
                 df_final_players = clean_df(df_final_players)
-                df_long_players = pd.pivot_table(df_final_players, values=['test_result'], index=['name'], columns=['text','period'], 
+                # df_long_players = pd.pivot_table(df_final_players, values=['test_result'], index=['name'], columns=['text','period'], 
+                df_long_players = pd.pivot_table(df_final_players, values=['test_result'], index=['name'], columns=['text','year month'], 
                                                 aggfunc={'test_result': max})
                 df_long_players = df_long_players.reset_index()
                 st.dataframe(df_long_players, use_container_width=True, hide_index=True)
@@ -663,7 +664,7 @@ if authentication_status:
             with st.expander("Export Selected Test Results", expanded=True):  
                 # ****
                 st.subheader(f"Test results of the selected tests fom {selected_start} to {selected_end}")
-                df_long_tests = pd.pivot_table(df_final_tests, values=['test_result'], index=['name'], columns=['text','period'], 
+                df_long_tests = pd.pivot_table(df_final_tests, values=['test_result'], index=['name'], columns=['text','year month'], 
                                                 aggfunc={'test_result': max})
                 df_long_tests = df_long_tests.reset_index()
                 st.dataframe(df_long_tests, use_container_width=True, hide_index=True)
@@ -701,7 +702,7 @@ if authentication_status:
             
             with st.expander("Export Selected Batteries", expanded=True):
                 
-                df_long_batteries = pd.pivot_table(df_final_batteries, values=['test_result'], index=['name'], columns=['text','period'], 
+                df_long_batteries = pd.pivot_table(df_final_batteries, values=['test_result'], index=['name'], columns=['text','year month'], 
                                                 aggfunc={'test_result': max})
                 df_long_batteries = df_long_batteries.reset_index()
                 st.dataframe(df_long_batteries, use_container_width=True, hide_index=True)
