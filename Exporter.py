@@ -60,18 +60,19 @@ def clean_df(df):
     df['text'] = df['text'].replace(['"', "'"], "", regex=True)
     df['date'] = pd.to_datetime(df['date'])
     # df['day'] = df['date'].dt.day
-    # df['month'] = df['date'].dt.month
-    # df['year'] = df['date'].dt.year
-    # df = df.assign(year_month=lambda x: x['year'].astype(str) + '-' + x['month'].astype(str))
+    df['month'] = df['date'].dt.month
+    df['year'] = df['date'].dt.year
+    df = df.assign(year_month=lambda x: x['year'].astype(str) + '-' + x['month'].astype(str))
     # df['year_month'] = pd.to_datetime(df['year_month'], format='%Y-%m').dt.floor('D')
+    df = df.rename(columns={'year_month': 'year month'})
     
     # Creating the 'year_month' column based on the 'date' column
-    df['year_month'] = df['date'].dt.to_period('M')
-    df = df.sort_values(by='year_month')
-    df = df.rename(columns={'year_month': 'year month'})
+    df['period'] = df['date'].dt.to_period('M')
+    df = df.sort_values(by='period')
     return df
 
-# ****
+
+# # ************************************************************************************************************
 # Page config 
 # ****
 st.set_page_config(
