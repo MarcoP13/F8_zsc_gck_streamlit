@@ -16,7 +16,7 @@ import plotly.graph_objects as go
 hide_st_style = """
             <style>
             #MainMenu { visibility: visible; }
-            header { visibility: visible; }
+            header { visibility: hidden; }
             footer { visibility: hidden; }
             .css-10pw50.ea3mdgi1 { visibility: hidden; }
             .block-container.css-z5fcl4.ea3mdgi4 {
