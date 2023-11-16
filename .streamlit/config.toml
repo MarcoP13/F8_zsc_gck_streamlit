@@ -3,3 +3,4 @@ base="dark"
 primaryColor="#e70514"
 backgroundColor="#1f3358"
 secondaryBackgroundColor="#0092ce"
+showErrorDetails = false
