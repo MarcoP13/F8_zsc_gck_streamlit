@@ -74,7 +74,17 @@ def clean_df(df):
     df = df.sort_values(by='period')
     return df
 
+def get_date(id_test_battery):
+    # Get the row in df_batteries_players DataFrame where the 'id_test_battery' is equal to the given value
+    row = df_batteries_players.loc[df_batteries_players['id_test_battery'] == id_test_battery]
 
+    # If there is a row that matches the condition, get the 'date' value from that row
+    if not row.empty:
+        date = row['date'].values[0]
+        return date
+    else:
+        return None
+    
 # # ************************************************************************************************************
 # Page config 
 # ****
@@ -129,10 +139,12 @@ if authentication_status:
     df_teams['team_name'] = df_teams['name'] + ' ' + df_teams['team_name']
     df_teams.drop(['name'], axis=1, inplace=True)
     df_team_players = pd.merge(df_team_players, df_season, on='id_season')
-    df_testresults_players = pd.merge(df_testsexercises_results, df_exercise_info, on='id_testexercise')
-    df_test_dates = df_batteries_players[['id_test_battery', 'date']]
-    df_test_dates = df_test_dates.rename(columns={'id_test_battery': 'id_clubtest_result'})
-    df_testresults_players = pd.merge(df_testresults_players, df_test_dates, on='id_clubtest_result')
+    df_results_players = df_testsexercises_results.copy()
+    df_results_players['date'] = df_results_players['id_clubtest_result'].apply(get_date)
+    df_testresults_players = pd.merge(df_results_players, df_exercise_info, on='id_testexercise')
+    # df_test_dates = df_batteries_players[['id_test_battery', 'date']]
+    # df_test_dates = df_test_dates.rename(columns={'id_test_battery': 'id_clubtest_result'})
+    # df_testresults_players = pd.merge(df_testresults_players, df_test_dates, on='id_clubtest_result')
 
     df_merged = pd.merge(df_batteries_players, df_batteries_template, on='id_battery')
     df_merged = pd.merge(df_merged, df_player, on='id_player')
@@ -150,6 +162,8 @@ if authentication_status:
 
     df_all_test = pd.merge(df_testresults_players, df_player, on='id_player')
     df_all_test.drop(['id_player','id_testexercise'], axis=1, inplace=True)
+    df_all_test['date'] = pd.to_datetime(df_all_test['date']).dt.date
+    df_all_test['dob'] = pd.to_datetime(df_all_test['dob']).dt.date
     df_final = df_all_test.copy()
     df_final.rename(columns={'id_clubtest': 'id_battery'}, inplace=True)
     df_final = pd.merge(df_final,df_batterie_names, on='id_battery')
@@ -169,6 +183,7 @@ if authentication_status:
     selected_start = st.sidebar.date_input("Start date", value=date_min_test, min_value=date_min_test, max_value=date_max_test)
     selected_end = st.sidebar.date_input("End date", value=date_max_test, min_value=date_min_test, max_value=date_max_test)
     df_final = df_final[df_final["date"].between(selected_start, selected_end)]
+    df_all_test = df_all_test[df_all_test["date"].between(selected_start, selected_end)]
     # Radiobuttons for the different views
     option = st.sidebar.radio('', ['Players Results', 'Selected Tests', 'Selected Batteries', 'General', 'CSV Export'])
     # select the season and the teams where we have test results
@@ -201,6 +216,11 @@ if authentication_status:
         df_final_players = df_final[df_final['name'].isin(selected_players)]
     except Exception as e:
         df_final_players = []
+        
+    try:
+        df_tests_players = df_final_players[df_final_players['name'].isin(selected_players)]
+    except Exception as e:
+        df_tests_players = []
     
     # Refresh Button
     refresh_button = st.sidebar.button("Show results")
@@ -214,6 +234,13 @@ if authentication_status:
         df_final_players['test_result'] = df_final_players['test_result'].replace(',', ".", regex=True)
     except:
         df_final_players = pd.DataFrame()  
+        
+    try:
+        df_tests_players = df_tests_players.reindex(columns=['name','date','text','test_result','unit','gender','dob','pos','nationality'])
+        df_tests_players['text'] = df_tests_players['text'].replace(['"', "'"], "", regex=True)
+        df_tests_players['test_result'] = df_tests_players['test_result'].replace(',', ".", regex=True)
+    except:
+        df_tests_players = pd.DataFrame()  
     
     # # ************************************************************************************************************
     # # Display the page
@@ -253,8 +280,9 @@ if authentication_status:
         # st.divider()
         st.subheader("Player Results ")
         
-        if not df_final_players.empty:
-            df_dict_test = split_df_by_test(df_final_players)
+        # if not df_final_players.empty:
+        if not df_tests_players.empty:
+            df_dict_test = split_df_by_test(df_tests_players)
             for test, df in df_dict_test.items():
                 
                 # header - test and metrics
