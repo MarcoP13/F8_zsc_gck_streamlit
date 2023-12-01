@@ -142,9 +142,6 @@ if authentication_status:
     df_results_players = df_testsexercises_results.copy()
     df_results_players['date'] = df_results_players['id_clubtest_result'].apply(get_date)
     df_testresults_players = pd.merge(df_results_players, df_exercise_info, on='id_testexercise')
-    # df_test_dates = df_batteries_players[['id_test_battery', 'date']]
-    # df_test_dates = df_test_dates.rename(columns={'id_test_battery': 'id_clubtest_result'})
-    # df_testresults_players = pd.merge(df_testresults_players, df_test_dates, on='id_clubtest_result')
 
     df_merged = pd.merge(df_batteries_players, df_batteries_template, on='id_battery')
     df_merged = pd.merge(df_merged, df_player, on='id_player')
@@ -216,16 +213,10 @@ if authentication_status:
         df_final_players = df_final[df_final['name'].isin(selected_players)]
     except Exception as e:
         df_final_players = []
-        
-    try:
-        df_tests_players = df_final_players[df_final_players['name'].isin(selected_players)]
-    except Exception as e:
-        df_tests_players = []
     
     # Refresh Button
     refresh_button = st.sidebar.button("Show results")
     if refresh_button:
-        # st.experimental_rerun()
         st.rerun()
         
     try:
@@ -234,13 +225,6 @@ if authentication_status:
         df_final_players['test_result'] = df_final_players['test_result'].replace(',', ".", regex=True)
     except:
         df_final_players = pd.DataFrame()  
-        
-    try:
-        df_tests_players = df_tests_players.reindex(columns=['name','date','text','test_result','unit','gender','dob','pos','nationality'])
-        df_tests_players['text'] = df_tests_players['text'].replace(['"', "'"], "", regex=True)
-        df_tests_players['test_result'] = df_tests_players['test_result'].replace(',', ".", regex=True)
-    except:
-        df_tests_players = pd.DataFrame()  
     
     # # ************************************************************************************************************
     # # Display the page
@@ -280,8 +264,7 @@ if authentication_status:
         # st.divider()
         st.subheader("Player Results ")
         
-        # if not df_final_players.empty:
-        if not df_tests_players.empty:
+        if not df_final_players.empty:
             df_dict_test = split_df_by_test(df_tests_players)
             for test, df in df_dict_test.items():
                 
