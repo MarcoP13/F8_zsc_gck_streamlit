@@ -265,7 +265,7 @@ if authentication_status:
         st.subheader("Player Results ")
         
         if not df_final_players.empty:
-            df_dict_test = split_df_by_test(df_tests_players)
+            df_dict_test = split_df_by_test(df_final_players)
             for test, df in df_dict_test.items():
                 
                 # header - test and metrics
