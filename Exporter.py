@@ -174,7 +174,7 @@ if authentication_status:
     # # ****
     today = datetime.date.today()
     # last_month = today - datetime.timedelta(days=30)
-    last_year = today - datetime.timedelta(days=365)
+    last_year = today - datetime.timedelta(days=527)
     # last_three_years = today - datetime.timedelta(days=1095)
     date_min_test = df_final['date'].min()
     date_max_test = df_final['date'].max()
