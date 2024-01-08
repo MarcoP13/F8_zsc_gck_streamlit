@@ -174,10 +174,11 @@ if authentication_status:
     # # ****
     today = datetime.date.today()
     # last_month = today - datetime.timedelta(days=30)
-    # last_year = today - datetime.timedelta(days=1095)
+    last_year = today - datetime.timedelta(days=365)
+    # last_three_years = today - datetime.timedelta(days=1095)
     date_min_test = df_final['date'].min()
     date_max_test = df_final['date'].max()
-    selected_start = st.sidebar.date_input("Start date", value=date_min_test, min_value=date_min_test, max_value=date_max_test)
+    selected_start = st.sidebar.date_input("Start date", value=last_year, min_value=date_min_test, max_value=date_max_test)
     selected_end = st.sidebar.date_input("End date", value=date_max_test, min_value=date_min_test, max_value=date_max_test)
     df_final = df_final[df_final["date"].between(selected_start, selected_end)]
     df_all_test = df_all_test[df_all_test["date"].between(selected_start, selected_end)]
