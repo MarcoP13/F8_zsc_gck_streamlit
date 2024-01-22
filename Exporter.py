@@ -95,7 +95,7 @@ st.set_page_config(
     )
 
 # hide the hamburger and the modify the footer
-# st.markdown(hide_st_style, unsafe_allow_html=True)
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
 names = ["Martin Kierot", "Force8 Coach", "General Access" ]
 usernames = ["mkierot", "f8c", "gaccess"]
