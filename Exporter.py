@@ -196,7 +196,7 @@ if authentication_status:
     selected_team_name = st.sidebar.selectbox('Team', df_season_teams['team_name'])
     selected_team_id = df_teams.loc[(df_teams['season'] == selected_season) & (df_teams['team_name'] == selected_team_name), 'id'].values[0]
     player_names = df_final["name"].unique()
-    player_names.sort()
+    player_names.sort(reverse=True)
     # st.write(f"agegroup id = {selected_agegroup_id} | team id = {selected_team_id}")
     df_team_players = df_team_players.loc[df_team_players['id_team'] == selected_team_id] 
     df_selected_team_players = df_player.loc[df_player['id_player'].isin(df_team_players['id_player'])]
