@@ -188,7 +188,7 @@ if authentication_status:
     season_names = df_season['season'].unique()
     # season_names.sort()
     season_names = sorted(season_names, reverse=True)
-    selected_season = st.sidebar.selectbox("Season ", season_names, index='23/24', key='season')
+    selected_season = st.sidebar.selectbox("Season ", season_names, index=None, key='season')
     df_agegroup = df_agegroup.loc[df_agegroup['id_agegroup'].isin(df_agegroup_club['id_agegroup'])]
     agegroup = df_agegroup['name'].unique()
     selected_agegroup = st.sidebar.selectbox("Agegroup ", agegroup, key='agegroup')
