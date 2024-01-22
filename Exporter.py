@@ -191,10 +191,10 @@ if authentication_status:
     selected_season = st.sidebar.selectbox("Season ", season_names, index=None, key='season')
     df_agegroup = df_agegroup.loc[df_agegroup['id_agegroup'].isin(df_agegroup_club['id_agegroup'])]
     agegroup = df_agegroup['name'].unique()
-    selected_agegroup = st.sidebar.selectbox("Agegroup ", agegroup, key='agegroup')
+    selected_agegroup = st.sidebar.selectbox("Agegroup ", agegroup, index=None, key='agegroup')
     selected_agegroup_id = df_agegroup.loc[df_agegroup['name'] == selected_agegroup, 'id_agegroup'].values[0]
     df_season_teams = df_teams.loc[(df_teams['season'] == selected_season) & (df_teams['id_agegroup'] == selected_agegroup_id)]
-    selected_team_name = st.sidebar.selectbox('Team', df_season_teams['team_name'])
+    selected_team_name = st.sidebar.selectbox('Team', df_season_teams['team_name'], index=None, key='team_name')
     selected_team_id = df_teams.loc[(df_teams['season'] == selected_season) & (df_teams['team_name'] == selected_team_name), 'id'].values[0]
     player_names = df_final["name"].unique()
     player_names.sort()
