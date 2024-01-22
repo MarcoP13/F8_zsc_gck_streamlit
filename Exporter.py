@@ -95,7 +95,7 @@ st.set_page_config(
     )
 
 # hide the hamburger and the modify the footer
-st.markdown(hide_st_style, unsafe_allow_html=True)
+# st.markdown(hide_st_style, unsafe_allow_html=True)
 
 names = ["Martin Kierot", "Force8 Coach", "General Access" ]
 usernames = ["mkierot", "f8c", "gaccess"]
@@ -189,21 +189,24 @@ if authentication_status:
     # season_names.sort()
     season_names = sorted(season_names, reverse=True)
     selected_season = st.sidebar.selectbox("Season ", season_names, index=None, key='season')
-    df_agegroup = df_agegroup.loc[df_agegroup['id_agegroup'].isin(df_agegroup_club['id_agegroup'])]
-    agegroup = df_agegroup['name'].unique()
-    selected_agegroup = st.sidebar.selectbox("Agegroup ", agegroup, index=None, key='agegroup')
-    selected_agegroup_id = df_agegroup.loc[df_agegroup['name'] == selected_agegroup, 'id_agegroup'].values[0]
-    df_season_teams = df_teams.loc[(df_teams['season'] == selected_season) & (df_teams['id_agegroup'] == selected_agegroup_id)]
-    selected_team_name = st.sidebar.selectbox('Team', df_season_teams['team_name'], index=None, key='team_name')
-    selected_team_id = df_teams.loc[(df_teams['season'] == selected_season) & (df_teams['team_name'] == selected_team_name), 'id'].values[0]
-    player_names = df_final["name"].unique()
-    player_names.sort()
-    # st.write(f"agegroup id = {selected_agegroup_id} | team id = {selected_team_id}")
-    df_team_players = df_team_players.loc[df_team_players['id_team'] == selected_team_id] 
-    df_selected_team_players = df_player.loc[df_player['id_player'].isin(df_team_players['id_player'])]
-    df_selected_team_players = df_selected_team_players.loc[df_selected_team_players['name'].isin(player_names)]
-    df_selected_team_players = df_selected_team_players['name'].tolist()
-    df_selected_team_players.sort()
+    if selected_season:
+        df_agegroup = df_agegroup.loc[df_agegroup['id_agegroup'].isin(df_agegroup_club['id_agegroup'])]
+        agegroup = df_agegroup['name'].unique()
+        selected_agegroup = st.sidebar.selectbox("Agegroup ", agegroup, index=None, key='agegroup')
+        if selected_agegroup:
+            selected_agegroup_id = df_agegroup.loc[df_agegroup['name'] == selected_agegroup, 'id_agegroup'].values[0]
+            df_season_teams = df_teams.loc[(df_teams['season'] == selected_season) & (df_teams['id_agegroup'] == selected_agegroup_id)]
+            selected_team_name = st.sidebar.selectbox('Team', df_season_teams['team_name'], index=None, key='team_name')
+            if selected_team_name:
+                selected_team_id = df_teams.loc[(df_teams['season'] == selected_season) & (df_teams['team_name'] == selected_team_name), 'id'].values[0]
+                player_names = df_final["name"].unique()
+                player_names.sort()
+                # st.write(f"agegroup id = {selected_agegroup_id} | team id = {selected_team_id}")
+                df_team_players = df_team_players.loc[df_team_players['id_team'] == selected_team_id] 
+                df_selected_team_players = df_player.loc[df_player['id_player'].isin(df_team_players['id_player'])]
+                df_selected_team_players = df_selected_team_players.loc[df_selected_team_players['name'].isin(player_names)]
+                df_selected_team_players = df_selected_team_players['name'].tolist()
+                df_selected_team_players.sort()
     try:
         selected_players = st.sidebar.multiselect("Players", player_names, df_selected_team_players, key='name')    
         if selected_players is None:
